@@ -12,10 +12,14 @@ def emotion_detector(text_to_analyze):
     #send request to API save response
     response = requests.post(URL, json = input_json, headers = headers).json()
     
-    #parse response (not necessary)
+    #parse response 
     emotions = {}
+    dom = 0
     for emotion, score in response['emotionPredictions'][0]['emotion'].items():
         emotions[emotion] = emotions.get(emotion, 0) + score
+        if score > dom:
+            emotions['dominant_emotion'] = emotion
+            dom = score
 
     return emotions
 
