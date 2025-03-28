@@ -10,8 +10,24 @@ def emotion_detector(text_to_analyze):
     input_json = { "raw_document": { "text": text_to_analyze } }
     
     #send request to API save response
-    response = requests.post(URL, json = input_json, headers = headers).json()
+    response = requests.post(URL, json = input_json, headers = headers)
+
+    #check for errors
+    status = response.status_code
+    if status == 400:
+        emotions = {
+            'anger': None,
+            'disgust': None,
+            'fear': None,
+            'joy': None,
+            'sadness': None,
+            'dominant_emotion': None
+        }
+        return emotions
     
+    #3convert to json
+    response = response.json()
+
     #parse response 
     emotions = {}
     dom = 0
